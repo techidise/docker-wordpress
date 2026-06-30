@@ -1,0 +1,92 @@
+# Video Name: "Docker Setup for Local Wordpress Development => Time 19:13"
+services:
+  nginx:
+    container_name: ${CONTAINER_NAME}-nginx
+    image: nginx:alpine
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - '8080:80'
+    volumes:
+      - ./nginx:/etc/nginx/conf.d:rw
+      - ./www:/var/www/html:rw
+      # - wordpress:/var/www/html
+      # - ./src:/var/www/html/wp-content/themes/custom-theme:rw
+    networks:
+      - internal
+
+  database:
+    image: mysql:8.0
+    container_name: ${CONTAINER_NAME}-database
+    restart: unless-stopped
+    env_file: .env
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD}
+      MYSQL_USER: ${DATABASE_USER}
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'mysqladmin',
+          'ping',
+          '-h',
+          'localhost',
+          '-u',
+          'root',
+          '-p$$DATABASE_ROOT_PASSWORD',
+        ]
+      timeout: 20s
+      retries: 10
+    ports:
+      - '3307:3306'
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      internal:
+        aliases:
+          - database
+
+  phpmyadmin:
+    container_name: ${CONTAINER_NAME}-phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    env_file: .env
+    environment:
+      PMA_HOST: database
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: '${DATABASE_ROOT_PASSWORD}'
+    ports:
+      - '8081:80'
+    networks:
+      - internal
+
+  wordpress:
+    depends_on:
+      - database
+    container_name: ${CONTAINER_NAME}-wordpress
+    image: wordpress:fpm-alpine
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      WORDPRESS_DB_HOST: database:3306
+      WORDPRESS_DB_NAME: '${DATABASE_NAME}'
+      WORDPRESS_DB_USER: '${DATABASE_USER}'
+      WORDPRESS_DB_PASSWORD: '${DATABASE_PASSWORD}'
+    volumes:
+      - ./www:/var/www/html:rw # Maps the whole WP-Content core locally
+        # - wordpress:/var/www/html
+        # - ./src:/var/www/html/wp-content/themes/custom-theme:rw
+    networks:
+      internal:
+        aliases:
+          - wordpress
+
+volumes:
+  dbdata:
+  wordpress:
+
+networks:
+  internal:
+    driver: bridge
