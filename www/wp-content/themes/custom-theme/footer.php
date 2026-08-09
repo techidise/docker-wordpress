@@ -1,4 +1,4 @@
-<footer class="footer sm:footer-horizontal bg-base-300 text-base-content p-10">
+<footer class="footer grow justify-between mx-auto items-center sm:footer-horizontal bg-base-300 text-base-content py-10 px-36 mt-10">
     <nav>
         <h6 class="footer-title">Services</h6>
         <a class="link link-hover">Branding</a>
@@ -50,6 +50,7 @@
                 </svg>
             </a>
         </div>
+        <p>&copy; <?php echo date('Y'); ?> <?php bloginfo('name'); ?>. All rights reserved.</p>
     </nav>
 </footer>
 

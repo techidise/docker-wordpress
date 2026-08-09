@@ -1,4 +1,11 @@
-<?php get_header(); ?>
+<?php
+
+/**
+ * The template for displaying 404 pages (not found)
+ */
+
+get_header();
+?>
 
 <article class="">
     <h1>Page Not Found</h1>

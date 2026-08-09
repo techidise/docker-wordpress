@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html <?php language_attributes(); ?>>
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="<?php bloginfo('charset') ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="TechiDISE Studio Website">
@@ -10,10 +10,10 @@
     <link rel="shortcut icon" href="/wp-content/themes/techidise/assets/images/logo.png">
 
     <?php wp_head(); ?>
-
 </head>
 
-<body>
+<body class="flex flex-col min-h-screen flex-1" <?php body_class(); ?>>
+    <?php wp_body_open(); ?>
     <header class="absolute inset-x-0 top-0 z-50">
         <nav aria-label="Global" class="flex items-center justify-between p-6 lg:px-8">
             <div class="flex lg:flex-1">
@@ -40,8 +40,7 @@
                     </svg>
                 </button>
             </div>
-            <div class="hidden lg:flex lg:gap-x-12"> <!-- Desktop Menu -->
-
+            <div class="hidden text-red-50 lg:flex lg:gap-x-12"> <!-- Desktop Menu -->
                 <?php
                 wp_nav_menu(
                     array(
@@ -55,7 +54,7 @@
             </div>
             <div class="hidden lg:flex lg:flex-1 lg:justify-end">
                 <!-- ?php get_search_form(); ? -->
-                <a href="#" alt="Let's Chat" class="rounded-full bg-rose-500 px-3.5 py-2.5 text-sm font-semibold text-rose-50 shadow-xs hover:bg-rose-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
+                <a href="#" alt="Let's Chat" class="rounded-full bg-rose-400 px-3.5 py-2.5 text-sm font-semibold text-rose-50 shadow-xs hover:bg-rose-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
                     <span aria-hidden="true">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                             <path fill-rule="evenodd" d="M19.5 9.75a.75.75 0 0 1-.75.75h-4.5a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 1 1.5 0v2.69l4.72-4.72a.75.75 0 1 1 1.06 1.06L16.06 9h2.69a.75.75 0 0 1 .75.75Z" clip-rule="evenodd" />
@@ -119,11 +118,11 @@
                 </div>
             </dialog>
         </el-dialog>
-        <div class="hidden sm:mb-8 sm:flex sm:justify-center">
+        <!-- <div class="hidden sm:mb-8 sm:flex sm:justify-center">
             <div class="relative rounded-full px-3 py-1 text-sm/6 text-gray-400 ring-1 ring-white/10 hover:ring-white/20">
                 <?php the_title(); ?> <a href="#" class="font-semibold text-indigo-400"><span aria-hidden="true" class="absolute inset-0"></span>Read more <span aria-hidden="true">&rarr;</span></a>
             </div>
-        </div>
+        </div> -->
 
         <!-- dynamic_sidebar('sidebar-1') --->
     </header>
